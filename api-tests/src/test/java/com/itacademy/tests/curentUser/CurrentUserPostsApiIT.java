@@ -38,9 +38,9 @@ public class CurrentUserPostsApiIT implements GeneralApi {
 
         List<Post> actualPostsList = postsApi.getPosts(
                 expectedPost.getId()
-                ,null
-                ,null
-                ,null
+                , null
+                , null
+                , null
                 , "-id"
                 , 1
                 , 100);
@@ -49,19 +49,21 @@ public class CurrentUserPostsApiIT implements GeneralApi {
         assertThatExceptionOfType(ApiException.class)
                 .isThrownBy(() -> postsApi.getPost(expectedPost.getId()));
     }
+
     @Test
     void getPostsByCurrentUser() {
         saveListPosts(postsApi);
         List<Post> posts = currentUserPostsApi.getPostsByCurrentUser(
                 null
-                ,null
-                ,null
-                ,"-id"
-                ,1
-                ,10
+                , null
+                , null
+                , "-id"
+                , 1
+                , 10
         );
         assertThat(posts).isNotEmpty();
     }
+
     @Test
     void getPostByCurrentUser() {
         Post expected = postsApi.createPost(createTestPost());

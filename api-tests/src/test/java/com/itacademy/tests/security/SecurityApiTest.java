@@ -66,14 +66,14 @@ class SecurityApiTest {
 
     private static Stream<Arguments> check() {
         return Stream.of(Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
-                    CurrentUserApi currentUserApi = new CurrentUserApi(apiClient);
-                    return currentUserApi.getCurrentUserWithHttpInfo();
-                },
-                "Get current User",
-                true,
-                true,
-                true,
-                false),
+                            CurrentUserApi currentUserApi = new CurrentUserApi(apiClient);
+                            return currentUserApi.getCurrentUserWithHttpInfo();
+                        },
+                        "Get current User",
+                        true,
+                        true,
+                        true,
+                        false),
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             CurrentUserApi currentUserApi = new CurrentUserApi(apiClient);

@@ -34,12 +34,12 @@ public class CurrentUserCommentsApiIT implements GeneralApi {
     @Test
     void getCommentsByCurrentUser() {
         Post post = postsApi.createPost(createTestPost());
-        saveListComment(post.getId(),commentsApi);
+        saveListComment(post.getId(), commentsApi);
         List<Comment> comments = currentUserCommentsApi.getCommentsByCurrentUser(
                 null
-                ,"-id"
-                ,1
-                ,10
+                , "-id"
+                , 1
+                , 10
         );
         assertThat(comments).isNotEmpty();
     }
@@ -52,9 +52,9 @@ public class CurrentUserCommentsApiIT implements GeneralApi {
 
         List<Comment> actualCommentsList = commentsApi.getComments(
                 post.getId()
-                ,expected.getId()
-                ,null
-                ,"-id"
+                , expected.getId()
+                , null
+                , "-id"
                 , 1
                 , 10);
 

@@ -26,9 +26,9 @@ public class IntegrationTest implements GeneralApi {
         User user = new UsersApi().createUser(createTestUser());
         PostsApi myPostsApi = new PostsApi(ApiClientUtil.getClient(user.getEmail(), DEFAULT_PASSWORD));
         Post post = myPostsApi.createPost(createTestPost());
-        assertPost(post,postsApi.getPost(post.getId()));
+        assertPost(post, postsApi.getPost(post.getId()));
         userApi.removeUser(user.getId());
-        assertPost(post,postsApi.getPost(post.getId()));
+        assertPost(post, postsApi.getPost(post.getId()));
         postsApi.removePost(post.getId());
     }
 
@@ -37,10 +37,10 @@ public class IntegrationTest implements GeneralApi {
         User user = new UsersApi().createUser(createTestUser());
         Post post = postsApi.createPost(createTestPost());
         CommentsApi myCommentsApi = new CommentsApi(ApiClientUtil.getClient(user.getEmail(), DEFAULT_PASSWORD));
-        Comment comment = myCommentsApi.createComment(post.getId(),createTestComment());
-        assertComment(comment,commentsApi.getComment(post.getId(), comment.getId()));
+        Comment comment = myCommentsApi.createComment(post.getId(), createTestComment());
+        assertComment(comment, commentsApi.getComment(post.getId(), comment.getId()));
         userApi.removeUser(user.getId());
-        assertComment(comment,commentsApi.getComment(post.getId(), comment.getId()));
+        assertComment(comment, commentsApi.getComment(post.getId(), comment.getId()));
     }
 
     @Test
