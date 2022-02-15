@@ -3,9 +3,13 @@ package com.itacademy.entities;
 import lombok.*;
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "post")
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Post {
     @Id
@@ -14,8 +18,16 @@ public class Post {
 
     // связь с Tag
     // postTags - имя ссылочной переменной в классе Post
-    @OneToMany(mappedBy = "postTags")
-    private List<Tag> tags;
+//    @OneToMany(mappedBy = "postTags")
+
+    @ToString.Exclude
+    @ManyToMany(targetEntity = Tag.class, cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "post_tags",
+            joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tags_id", referencedColumnName = "id")
+    )
+       private Set<Tag> tags;
 
     @Column
     private String createdOn;

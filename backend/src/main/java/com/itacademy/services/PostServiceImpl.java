@@ -17,19 +17,13 @@ public class PostServiceImpl implements PostService {
     private UserService userService;
     @Autowired
     private PostRepository postRepository;
-    @Autowired
-    private PostConverter postConverter;
+
     @Autowired
     private UserConverter userConverter;
 
     @Override
     public PostDto createPost(PostDto postDto) {
-        Post post;
-        post = postConverter.fromPostDtoToPost(postDto);
-        post.setAuthor(userConverter.fromUserDtoToUser(userService.getCurrentUser()));
-        post.setCreatedOn(String.valueOf(OffsetDateTime.now()));
-        post.setUpdatedOn(String.valueOf(OffsetDateTime.now()));
-        postRepository.save(post);
-        return postConverter.fromPostToPostDto(post);
+
+        return null;
     }
 }

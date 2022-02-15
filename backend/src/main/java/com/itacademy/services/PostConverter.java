@@ -6,11 +6,11 @@ import com.itacademy.entities.Post;
 import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
-
+/*
 @Component
 public class PostConverter {
     public Post fromPostDtoToPost(PostDto postDto) {
-        Post post = new Post();
+      *//*  Post post = new Post();
 //        post.setId(postDto.getId());
         post.setTags(postDto.getTags());
 //        post.setCreatedOn(String.valueOf(postDto.getCreatedOn()));
@@ -19,7 +19,7 @@ public class PostConverter {
         post.setTitle(postDto.getTitle());
         post.setPreviewAttachment(postDto.getPreviewAttachment());
 //        post.setUpdatedOn(String.valueOf(postDto.getUpdatedOn()));
-        return post;
+        return post;*//*
     }
 
     public PostDto fromPostToPostDto(Post post) {
@@ -34,4 +34,4 @@ public class PostConverter {
                 .updatedOn(OffsetDateTime.parse(post.getUpdatedOn()))
                 .build();
     }
-}
+}*/
