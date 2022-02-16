@@ -3,6 +3,8 @@ package com.itacademy.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -32,11 +34,9 @@ public class Tag {
         return Objects.hash(id, name);
     }
 
-
-/* //relation with Post
+ /*//relation with Post
     // name= - внешний ключ
     // postTags - это связь, что в mappedBy of Post class
-    @ManyToOne
-    @JoinColumn(name="post_id")
-    private Post postTags;*/
+ @ManyToMany(mappedBy = "tags",fetch = FetchType.EAGER)
+ private List<Post> posts = new ArrayList<>();*/
 }

@@ -1,7 +1,11 @@
 package com.itacademy.entities;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -20,23 +24,24 @@ public class Post {
     // postTags - имя ссылочной переменной в классе Post
 //    @OneToMany(mappedBy = "postTags")
 
-    @ToString.Exclude
-    @ManyToMany(targetEntity = Tag.class, cascade = CascadeType.MERGE)
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "post_tags",
-            joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "tags_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tags_id")
     )
-       private Set<Tag> tags;
+       private Set<Tag> tags = new HashSet<>();
 
     @Column
-    private String createdOn;
+    private LocalDateTime createdOn;
 
 
     // relation with User
     // name= - внешний ключ
     // author - это связь, что в mappedBy of User class
     @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "authorOfPosts")
     private User author;
 
@@ -51,7 +56,7 @@ public class Post {
     private String previewAttachment;
 
     @Column
-    private String updatedOn;
+    private LocalDateTime updatedOn;
 
 //    // связь с Comment
 //    @OneToMany(mappedBy = "postComment")

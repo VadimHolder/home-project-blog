@@ -1,6 +1,7 @@
 package com.itacademy.controllers;
 
 import com.itacademy.dto.PostDto;
+import com.itacademy.response.RestApiValidationException;
 import com.itacademy.services.PostService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class PostController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping("/posts")
     @PreAuthorize("hasAnyAuthority('admin', 'blogger', 'moderator')")
-    public PostDto createPost(@RequestBody PostDto postDto) {
+    public PostDto createPost(@RequestBody PostDto postDto) throws RestApiValidationException {
         return postService.createPost(postDto);
     }
 
