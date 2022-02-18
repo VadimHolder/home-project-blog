@@ -1,23 +1,25 @@
 package com.itacademy.repositories;
 
 
-import com.itacademy.dto.TagDto;
 import com.itacademy.entities.Tag;
-import com.itacademy.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
+@Repository
 public interface TagRepository extends JpaRepository<Tag, Integer> {
 
-    Tag findTagById(Integer id);
-
     Tag findTagByName(String name);
+    Tag findTagById (Integer id);
 
-    /*@Override
-    Optional<Tag> findByName(String name);
-*/
+
     Tag findTagByIdAndName(Integer id, String name);
+
+//    Tag findTagByIdAnAndName(Integer id, String name);
+
+//    Optional<List<Tag>> findTagsByName(List<String> name);
+
 
 }

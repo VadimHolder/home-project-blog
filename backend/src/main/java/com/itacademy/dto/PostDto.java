@@ -19,9 +19,9 @@ import java.util.Set;
 @Builder
 public class PostDto {
     private Integer id;
-    private Set<Tag> tags;
+    private Set<TagDto> tags;
     private LocalDateTime createdOn;
-    private AuthorDto author;
+    private UserDto author;
     private String text;
     private String title;
     private String previewAttachment;

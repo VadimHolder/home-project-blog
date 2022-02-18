@@ -1,9 +1,11 @@
 package com.itacademy.entities;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user")
@@ -47,6 +49,7 @@ public class User {
     private String role;
 
 
+/*
 
     // связь с Post
     // user - имя ссылочной переменной в классе Post
@@ -57,5 +60,20 @@ public class User {
     @OneToMany(mappedBy = "userComment")
     private List<Comment> comments;
 
+*/
 
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User that = (User) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

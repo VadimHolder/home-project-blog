@@ -1,12 +1,14 @@
 package com.itacademy.entities;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -14,6 +16,7 @@ import java.util.Set;
 @Table(name = "post")
 @NoArgsConstructor
 @AllArgsConstructor
+//@RequiredArgsConstructor
 @Data
 public class Post {
     @Id
@@ -25,13 +28,13 @@ public class Post {
 //    @OneToMany(mappedBy = "postTags")
 
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Tag.class, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "post_tags",
-            joinColumns = @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn(name = "tags_id")
+            joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tags_id", referencedColumnName = "id")
     )
-       private Set<Tag> tags = new HashSet<>();
+       private Set<Tag> tags;
 
     @Column
     private LocalDateTime createdOn;
@@ -40,9 +43,8 @@ public class Post {
     // relation with User
     // name= - внешний ключ
     // author - это связь, что в mappedBy of User class
-    @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @JoinColumn(name = "authorOfPosts")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "user_id")
     private User author;
 
 
@@ -58,10 +60,16 @@ public class Post {
     @Column
     private LocalDateTime updatedOn;
 
-//    // связь с Comment
-//    @OneToMany(mappedBy = "postComment")
-//    private List<Comment> comments;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Post that = (Post) o;
+        return id != null && Objects.equals(id, that.id);
+    }
 
-
-
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

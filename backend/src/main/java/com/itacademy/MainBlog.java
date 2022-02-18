@@ -13,11 +13,6 @@ public class MainBlog {
     }
 
 
-
-  /*  @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }*/
 }
 
 

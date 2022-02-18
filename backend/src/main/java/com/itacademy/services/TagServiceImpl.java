@@ -1,7 +1,7 @@
 package com.itacademy.services;
 
 import com.itacademy.dto.TagDto;
-import com.itacademy.entities.Tag;
+import com.itacademy.mapper.TagMapper;
 import com.itacademy.repositories.TagRepository;
 import com.itacademy.response.RestApiNotFoundException;
 import lombok.AllArgsConstructor;
@@ -20,59 +20,55 @@ import static java.util.Objects.isNull;
 @AllArgsConstructor
 public class TagServiceImpl implements TagService{
 
-    private final TagConverter tagConverter;
+    private final TagMapper tagMapper;
     private final TagRepository tagRepository;
 
     @Override
     public List<TagDto> getTags(Integer id, String name, String sort, Integer pageNum, Integer pageSize) {
 
         if (!isNull(id) && !isNull(name) && !name.isEmpty()) {
-            if (isNull(tagRepository.findTagByIdAndName(id, name)))
-                throw new RestApiNotFoundException("There is not exist such combination id-name of Tag");
-            return List.of(tagConverter.fromTagToTagDto(tagRepository.findTagByIdAndName(id, name)));
+            return List.of(tagMapper.tagToDto(tagRepository.findTagByIdAndName(id, name)));
         } else if (!isNull(id)) {
-            if (isNull(tagRepository.findTagById(id)))
+            if (isNull(getTagById(id)))
                 throw new RestApiNotFoundException("There is not exist such id of User");
-            return List.of(tagConverter.fromTagToTagDto(tagRepository.findTagById(id)));
+            return List.of(getTagById(id));
         } else if (!isNull(name)) {
-            if (isNull(tagRepository.findTagByName(name)))
-                throw new RestApiNotFoundException("There is not exist such name of User");
-            return List.of(tagConverter.fromTagToTagDto(tagRepository.findTagByName(name)));
+
+            if(isNull(tagRepository.findTagByName(name))){
+                throw new RestApiNotFoundException("Tag with name: " + name + " not exist!");
+            }
+            return List.of(tagMapper.tagToDto(tagRepository.findTagByName(name)));
         }
 
         List<TagDto> tagDtoList = new ArrayList<>();
         if (sort.equals("id")) {
             Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("id").ascending());
-//            Page<User> sortedUsers = userRepository.findAll(pageable);
-//            userDtoList = userConverter.fromUserToUserDto(sortedUsers);
+
             tagDtoList = tagRepository.findAll(pageable).stream()
-                    .map(tagConverter::fromTagToTagDto)
+                    .map(tagMapper::tagToDto)
                     .collect(Collectors.toList());
         }
         if (sort.equals("name")) {
             Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("name").ascending());
-//            Page<User> sortedUsers = userRepository.findAll(pageable);
-//            userDtoList = userConverter.fromUserToUserDto(sortedUsers);
+
             tagDtoList = tagRepository.findAll(pageable).stream()
-                    .map(tagConverter::fromTagToTagDto)
+                    .map(tagMapper::tagToDto)
                     .collect(Collectors.toList());
         }
 
         if (sort.equals("-id")) {
             Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("id").descending());
-//            Page<User> sortedUsers = userRepository.findAll(pageable);
-//            userDtoList = userConverter.fromUserToUserDto(sortedUsers.map());
+
             tagDtoList = tagRepository.findAll(pageable).stream()
-                    .map(tagConverter::fromTagToTagDto)
+                    .map(tagMapper::tagToDto)
                     .collect(Collectors.toList());
         }
 
         if (sort.equals("-name")) {
             Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("name").descending());
-//            Page<User> sortedUsers = userRepository.findAll(pageable);
-//            userDtoList = userConverter.fromUserToUserDto(sortedUsers.map());
+
             tagDtoList = tagRepository.findAll(pageable).stream()
-                    .map(tagConverter::fromTagToTagDto)
+                    .map(tagMapper::tagToDto)
                     .collect(Collectors.toList());
         }
 
@@ -81,18 +77,16 @@ public class TagServiceImpl implements TagService{
 
     @Override
     public TagDto getTagById(Integer id) {
-        Tag tag = tagRepository.findTagById(id);
-
-        if (isNull(tag)) throw new RestApiNotFoundException("There is not exist such Tag");
-        return tagConverter.fromTagToTagDto(tag);
+        return tagMapper.tagToDto(tagRepository.findById(id).orElseThrow(
+                () -> new RestApiNotFoundException("Tag with id: " + id + " not exist!")
+        ));
     }
 
     @Override
     public void removeTag(Integer id) {
-        if (isNull(tagRepository.findTagById(id))) {
-            throw new RestApiNotFoundException("There is not exist such Tag");
-        }
-        tagRepository.deleteById(id);
+        tagRepository.delete(tagRepository.findById(id).orElseThrow(
+                () -> new RestApiNotFoundException("Tag with id: " + id + " not exist!")
+        ));
 
     }
 }
